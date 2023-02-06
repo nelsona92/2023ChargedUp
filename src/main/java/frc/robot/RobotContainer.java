@@ -37,8 +37,8 @@ public class RobotContainer {
     configureBindings();
 
     m_robotDrive
-        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftX(),
-            -m_driverController.getRightY()), m_robotDrive));
+        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
+            -m_driverController.getRightX()), m_robotDrive));
 
   }
 

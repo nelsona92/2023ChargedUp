@@ -34,6 +34,10 @@ private final DifferentialDrive m_drive =
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
 
+    //inverting oneside
+    m_zeroWheel.setInverted(true);
+    m_oneWheel.setInverted(true);
+
     //ramp rate
     m_zeroWheel.setOpenLoopRampRate(DriveConstants.kRampRate);
     m_oneWheel.setOpenLoopRampRate(DriveConstants.kRampRate);
@@ -47,6 +51,8 @@ private final DifferentialDrive m_drive =
     //
     m_drive.setDeadband(0.15);
     m_drive.setMaxOutput(DriveConstants.kMaxSpeed);
+
+
   }
 
   // 

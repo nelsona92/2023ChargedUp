@@ -17,9 +17,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public final class DriveConstants{
-    public static final int kLeftMotor00CanBusID = 10;
-    public static final int kLeftMotor01CanBusID = 11;
-    public static final int kRightMotor02CanBusID = 12;
+    public static final int kLeftMotor00CanBusID = 11;
+    public static final int kLeftMotor01CanBusID = 12;
+    public static final int kRightMotor02CanBusID = 10;
     public static final int kRightMotor03CanBusID = 13;
     public static final double kMaxSpeed = 0.9;
     public static final double kRampRate = 0.65;
