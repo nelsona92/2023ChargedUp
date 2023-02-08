@@ -9,9 +9,12 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -35,10 +38,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    System.out.println("out of configure bindings");
 
     m_robotDrive
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
             -m_driverController.getRightX()), m_robotDrive));
+
 
   }
 
@@ -52,15 +57,25 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
+  
+    /* 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-
+    */
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+    //half speed
+    m_driverController.povDown().onTrue(m_robotDrive.halfSpeed());
+    //full speed
+    m_driverController.povUp().onTrue(m_robotDrive.fullSpeed());
+
+    }
+      
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

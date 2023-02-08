@@ -9,6 +9,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -69,6 +74,39 @@ private final DifferentialDrive m_drive =
   public void setMax(double maxOutput){
     m_drive.setMaxOutput(maxOutput);
   }
+    // turns the to half and then back on
+    public void halfPower() {
+      if (!Constants.powerState) {
+        m_drive.setMaxOutput(DriveConstants.kHalfSpeed);
+      }
+      else {
+        m_drive.setMaxOutput(DriveConstants.kMaxSpeed); 
+      }
+      Constants.powerState = !Constants.powerState;
+    }
+
+    public CommandBase halfSpeed(){
+      return runOnce(
+        () -> System.out.println("Half Speed!!!!!!!!!!!")
+      ).andThen(
+        () -> m_drive.setMaxOutput(Constants.DriveConstants.kHalfSpeed)
+      ).andThen(
+        () -> Constants.kspeedSlowState = !Constants.kspeedSlowState
+      ).andThen(
+        () -> System.out.println(Constants.kspeedSlowState)
+      );
+    }
+    public CommandBase fullSpeed(){
+      return runOnce(
+        () -> System.out.println("Full Speed!!!!!!!!!!!")
+      ).andThen(
+        () -> m_drive.setMaxOutput(Constants.DriveConstants.kMaxSpeed)
+      ).andThen(
+        () -> Constants.kspeedSlowState = !Constants.kspeedSlowState
+      ).andThen(
+        () -> System.out.println(Constants.kspeedSlowState)
+      );
+    }
 
 
   @Override
