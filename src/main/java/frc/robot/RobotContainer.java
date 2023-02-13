@@ -69,9 +69,9 @@ public class RobotContainer {
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     //half speed
-    m_driverController.povDown().onTrue(m_robotDrive.halfSpeed());
-    //full speed
-    m_driverController.povUp().onTrue(m_robotDrive.fullSpeed());
+    m_driverController.leftBumper()
+        .onTrue(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)))
+        .onFalse(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed)));
 
     }
       
