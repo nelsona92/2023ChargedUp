@@ -8,41 +8,50 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BalnceCommand extends CommandBase {
-
+  
+  private DriveSubsystem driveSubsystem;
   //drive
-  private final DriveSubsystem m_robotdrive = new DriveSubsystem();
+  //private final DriveSubsystem m_robotdrive = DriveSubsystem();
   //navX
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
   /** Creates a new BalnceCommand. */
-  public BalnceCommand() {
+  public BalnceCommand(DriveSubsystem driveSubsystem) {  
     // Use addRequirements() here to declare subsystem dependencies.
+    this.driveSubsystem = driveSubsystem;
+    addRequirements(driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    navx.reset();
+    System.out.println("Balance Active");
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (navx.getRoll() < 2){
-        m_robotdrive.arcadeDrive(0, 0);
+      driveSubsystem.arcadeDrive(0, 0);
     }
 
     if (navx.getRoll() > -2){
-        m_robotdrive.arcadeDrive(0, 0);
+        driveSubsystem.arcadeDrive(0, 0);
     }
     
     if (navx.getRoll() <= -2){
-        m_robotdrive.arcadeDrive(1, 0);
+        driveSubsystem.arcadeDrive(Constants.DriveConstants.kMaxSpeed, 0);
     }
 
     if (navx.getRoll() >= 2){
-        m_robotdrive.arcadeDrive(1, 0);
+        driveSubsystem.arcadeDrive(Constants.DriveConstants.kMaxSpeed, 0);
     }
   }
 
