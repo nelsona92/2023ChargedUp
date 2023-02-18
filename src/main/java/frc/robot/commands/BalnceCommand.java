@@ -4,33 +4,33 @@
 
 package frc.robot.commands;
 
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BalnceCommand extends CommandBase {
   
   private DriveSubsystem driveSubsystem;
+  private Robot robot;
   //drive
   //private final DriveSubsystem m_robotdrive = DriveSubsystem();
   //navX
-  private final AHRS navx = new AHRS(SPI.Port.kMXP);
+  //private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
   /** Creates a new BalnceCommand. */
-  public BalnceCommand(DriveSubsystem driveSubsystem) {  
+  public BalnceCommand(DriveSubsystem driveSubsystem, Robot robot) {  
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
+    this.robot = robot;
     addRequirements(driveSubsystem);
+  
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    navx.reset();
+    robot.navx.reset();
     System.out.println("Balance Active");
 
   }
@@ -38,20 +38,20 @@ public class BalnceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (navx.getRoll() < 2){
+    if (robot.navx.getRoll() < 2){
       driveSubsystem.arcadeDrive(0, 0);
     }
 
-    if (navx.getRoll() > -2){
+    if (robot.navx.getRoll() > -2){
         driveSubsystem.arcadeDrive(0, 0);
     }
     
-    if (navx.getRoll() <= -2){
-        driveSubsystem.arcadeDrive(Constants.DriveConstants.kMaxSpeed, 0);
+    if (robot.navx.getRoll() <= -2){
+        driveSubsystem.arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0);
     }
 
-    if (navx.getRoll() >= 2){
-        driveSubsystem.arcadeDrive(Constants.DriveConstants.kMaxSpeed, 0);
+    if (robot.navx.getRoll() >= 2){
+        driveSubsystem.arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0);
     }
   }
 
