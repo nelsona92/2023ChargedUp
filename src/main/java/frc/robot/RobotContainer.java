@@ -31,10 +31,10 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   //calling robot for navX
-  private Robot m_robot;
+  //private Robot m_robot;
 
   //balance subsytem
-  private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive, m_robot);
+  private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =

@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +18,9 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
+
+public AHRS navx = new AHRS(SPI.Port.kMXP);
+public static double m_roll = 0;
 
 private final CANSparkMax m_twoWheel = 
   new CANSparkMax(DriveConstants.kRightMotor02CanBusID, MotorType.kBrushless);
@@ -109,6 +115,7 @@ private final DifferentialDrive m_drive =
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-   
+    m_roll = navx.getRoll();
+    SmartDashboard.putNumber("Roll", m_roll);
   }
 }

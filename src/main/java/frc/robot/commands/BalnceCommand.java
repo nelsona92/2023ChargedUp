@@ -6,23 +6,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BalnceCommand extends CommandBase {
   
   private DriveSubsystem driveSubsystem;
-  private Robot robot;
+  //private Robot robot;
   //drive
   //private final DriveSubsystem m_robotdrive = DriveSubsystem();
   //navX
   //private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
   /** Creates a new BalnceCommand. */
-  public BalnceCommand(DriveSubsystem driveSubsystem, Robot robot) {  
+  public BalnceCommand(DriveSubsystem driveSubsystem) {  
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
-    this.robot = robot;
     addRequirements(driveSubsystem);
   
   }
@@ -30,7 +28,7 @@ public class BalnceCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    robot.navx.reset();
+    driveSubsystem.navx.reset();
     System.out.println("Balance Active");
 
   }
@@ -38,19 +36,19 @@ public class BalnceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (robot.navx.getRoll() < 2){
+    if (driveSubsystem.navx.getRoll() < 2){
       driveSubsystem.arcadeDrive(0, 0);
     }
 
-    if (robot.navx.getRoll() > -2){
+    if (driveSubsystem.navx.getRoll() > -2){
         driveSubsystem.arcadeDrive(0, 0);
     }
     
-    if (robot.navx.getRoll() <= -2){
+    if (driveSubsystem.navx.getRoll() <= -2){
         driveSubsystem.arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0);
     }
 
-    if (robot.navx.getRoll() >= 2){
+    if (driveSubsystem.navx.getRoll() >= 2){
         driveSubsystem.arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0);
     }
   }
