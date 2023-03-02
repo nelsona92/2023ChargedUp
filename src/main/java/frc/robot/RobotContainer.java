@@ -34,16 +34,18 @@ public class RobotContainer {
   //calling robot for navX
   //private Robot m_robot;
 
-  //balance subsytem
-  private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
-
-  //air compressor
+  //pneumatics
   Compressor pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
   Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
   
   boolean enabled = pcmCompressor.isEnabled();
   boolean pressureSwitch = pcmCompressor.getPressureSwitchValue();
   double current = pcmCompressor.getCurrent();
+
+
+  //balance subsytem
+  private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -90,6 +92,8 @@ public class RobotContainer {
 
     //balance
     m_driverController.a().toggleOnTrue(m_balance);
+
+
     }
       
   
