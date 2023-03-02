@@ -36,7 +36,6 @@ public class RobotContainer {
 
   //pneumatics
   Compressor pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
   
   boolean enabled = pcmCompressor.isEnabled();
   boolean pressureSwitch = pcmCompressor.getPressureSwitchValue();
