@@ -11,6 +11,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -41,6 +42,7 @@ public class RobotContainer {
   boolean pressureSwitch = pcmCompressor.getPressureSwitchValue();
   double current = pcmCompressor.getCurrent();
 
+  Solenoid pcmSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
 
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
