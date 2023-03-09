@@ -10,8 +10,10 @@ import frc.robot.commands.BalnceCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -42,14 +44,15 @@ public class RobotContainer {
   boolean pressureSwitch = pcmCompressor.getPressureSwitchValue();
   double current = pcmCompressor.getCurrent();
 
-  Solenoid pcmSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+  //Solenoid pcmSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+  DoubleSolenoid pcmDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
 
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  public final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -57,6 +60,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     System.out.println("out of configure bindings");
+
+    pcmDoubleSolenoid.set(Value.kForward);
 
     m_robotDrive
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
@@ -75,7 +80,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    //pcmDoubleSolenoid.set(Value.kForward);
   
     /* 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
@@ -94,6 +99,15 @@ public class RobotContainer {
     //balance
     m_driverController.a().toggleOnTrue(m_balance);
 
+    //solenoid
+    m_driverController.povUp()
+      .onTrue(Commands.runOnce(() -> System.out.println("piston")))
+      .toggleOnTrue(Commands.runOnce(() -> pcmDoubleSolenoid.toggle()));
+
+
+    
+    //m_driverController.povUp().toggleOnTrue(pcmDoubleSolenoid.set(Value.kForward));
+    //m_driverController.povDown().toggleOnTrue(pcmDoubleSolenoid.set(Value.kReverse));
 
     }
       
