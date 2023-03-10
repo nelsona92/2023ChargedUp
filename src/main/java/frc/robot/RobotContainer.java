@@ -7,12 +7,12 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalnceCommand;
+import frc.robot.commands.PullIn;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -45,7 +45,7 @@ public class RobotContainer {
   double current = pcmCompressor.getCurrent();
 
   //Solenoid pcmSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
-  DoubleSolenoid pcmDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+  //DoubleSolenoid pcmDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
 
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
@@ -61,7 +61,7 @@ public class RobotContainer {
     configureBindings();
     System.out.println("out of configure bindings");
 
-    pcmDoubleSolenoid.set(Value.kForward);
+    //pcmDoubleSolenoid.set(Value.kForward);
 
     m_robotDrive
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
@@ -100,10 +100,12 @@ public class RobotContainer {
     m_driverController.a().toggleOnTrue(m_balance);
 
     //solenoid
+    m_driverController.povUp().onTrue(new PullIn());
+    /* 
     m_driverController.povUp()
       .onTrue(Commands.runOnce(() -> System.out.println("piston")))
       .toggleOnTrue(Commands.runOnce(() -> pcmDoubleSolenoid.toggle()));
-
+*/
 
     
     //m_driverController.povUp().toggleOnTrue(pcmDoubleSolenoid.set(Value.kForward));
