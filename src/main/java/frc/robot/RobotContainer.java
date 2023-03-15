@@ -61,7 +61,7 @@ public class RobotContainer {
     System.out.println("out of configure bindings");
 
     m_robotDrive
-        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
+        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(m_driverController.getLeftY(),
             m_driverController.getRightX()), m_robotDrive));
 
 

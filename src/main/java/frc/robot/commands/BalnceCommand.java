@@ -48,7 +48,7 @@ public class BalnceCommand extends CommandBase {
     }
 
     if (driveSubsystem.navx.getRoll() >= 2){
-        driveSubsystem.arcadeDrive(-Constants.DriveConstants.kBalanceSpeed, 0);
+        driveSubsystem.arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0);
     }
   }
 
