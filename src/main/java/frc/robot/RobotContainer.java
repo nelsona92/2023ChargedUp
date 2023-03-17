@@ -4,18 +4,23 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
+import frc.robot.commands.AutoCommand;
 import frc.robot.commands.BalnceCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -27,11 +32,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
    // drn -- drive & intake & arm subsystem declarations
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+
+   // drn -- A chooser for autonomous commands
+   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   //calling robot for navX
   //private Robot m_robot;
@@ -49,11 +54,22 @@ public class RobotContainer {
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
-
+  private final AutoCommand m_auto = new AutoCommand();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  //auto command
+  private final Command m_simpleDriveReverse = new StartEndCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0),
+      m_robotDrive).withTimeout(AutoConstants.kTimeOut);
+  private final Command m_simpleAuto = new SequentialCommandGroup(
+    new RunCommand(() -> pcmDoubleSolenoid.set(Value.kReverse)).withTimeout(1.5),
+    new RunCommand(() -> pcmDoubleSolenoid.set(Value.kForward)).withTimeout(0.2),
+    new StartEndCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
+    //new StartEndCommand(() -> m_robotDrive.arcadeDrive(0.0, 1), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.7),
+    //new StartEndCommand(() -> m_robotDrive.arcadeDrive(-1, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.5),
+    (m_balance));
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -63,8 +79,9 @@ public class RobotContainer {
     m_robotDrive
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(m_driverController.getLeftY(),
             m_driverController.getRightX()), m_robotDrive));
-
-
+    
+    m_chooser.setDefaultOption("Auto", m_simpleAuto);
+    m_robotDrive.m_drive.setSafetyEnabled(false);
   }
 
   /**
@@ -119,6 +136,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_chooser.getSelected();
   }
 }

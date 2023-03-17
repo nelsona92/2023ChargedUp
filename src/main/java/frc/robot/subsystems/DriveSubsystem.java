@@ -38,7 +38,7 @@ private final MotorControllerGroup m_leftMotors =
 private final MotorControllerGroup m_rightMotors =
   new MotorControllerGroup(m_twoWheel, m_threeWheel);
 
-private final DifferentialDrive m_drive =
+public final DifferentialDrive m_drive =
   new DifferentialDrive(m_leftMotors, m_rightMotors);
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {

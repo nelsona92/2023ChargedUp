@@ -36,4 +36,9 @@ public final class Constants {
     public static final double kBalanceSpeed = 0.6;
     
   }
+  public final class AutoConstants{
+    public static final double kTimeOut = 1.5;
+    public static final double kPower = 1.2;
+  }
+
 }
