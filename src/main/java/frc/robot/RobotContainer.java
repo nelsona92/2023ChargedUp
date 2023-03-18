@@ -9,10 +9,15 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.BalnceCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -54,6 +59,12 @@ public class RobotContainer {
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
+  private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
+  
+  //camera
+  private UsbCamera camera01;
+  private VideoSink videoServer;
+
   private final AutoCommand m_auto = new AutoCommand();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final CommandXboxController m_driverController =
@@ -72,6 +83,7 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    cameraInit();
     // Configure the trigger bindings
     configureBindings();
     System.out.println("out of configure bindings");
@@ -81,7 +93,19 @@ public class RobotContainer {
             m_driverController.getRightX()), m_robotDrive));
     
     m_chooser.setDefaultOption("Auto", m_simpleAuto);
+
+    sbCamera.add(camera01)
+    .withSize(6, 4).withPosition(2, 0);
+    
     m_robotDrive.m_drive.setSafetyEnabled(false);
+  }
+
+  private void cameraInit() {
+    camera01 = CameraServer.startAutomaticCapture(0);
+    videoServer = CameraServer.getServer();
+    camera01.setResolution(320, 240);
+    camera01.setFPS(15);
+    videoServer.setSource(camera01);
   }
 
   /**

@@ -65,7 +65,7 @@ public final DifferentialDrive m_drive =
 
   // 
   public void arcadeDrive(double fwd, double rot){
-    m_drive.arcadeDrive(-fwd*Math.abs(fwd), rot);
+    m_drive.arcadeDrive(-fwd*Math.abs(fwd), rot/1.1);
   }
 
   // straight driving... needs gyro added
