@@ -77,17 +77,15 @@ public final DifferentialDrive m_drive =
   public void setMax(double maxOutput){
     m_drive.setMaxOutput(maxOutput);
   }
+  /*
     // turns the to half and then back on
-    public void halfPower() {
-      if (!Constants.powerState) {
-        m_drive.setMaxOutput(DriveConstants.kHalfSpeed);
-      }
-      else {
-        m_drive.setMaxOutput(DriveConstants.kMaxSpeed); 
-      }
-      Constants.powerState = !Constants.powerState;
+    public boolean halfPower() {
+      runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)),
+      Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed));
+      return false;
+      
     }
-
+*/
     public CommandBase halfSpeed(){
       return runOnce(
         () -> System.out.println("Half Speed!!!!!!!!!!!")

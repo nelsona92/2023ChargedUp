@@ -32,7 +32,7 @@ public final class Constants {
     public static final int kRightMotor03CanBusID = 13;
     public static final double kMaxSpeed = 0.9;
     public static final double kRampRate = 0.65;
-    public static final double kHalfSpeed = 0.5;
+    public static final double kHalfSpeed = 0.4;
     public static final double kBalanceSpeed = 0.6;
     
   }

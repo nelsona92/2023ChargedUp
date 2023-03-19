@@ -8,6 +8,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.BalnceCommand;
+import frc.robot.commands.HalfSpeed;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -59,6 +60,9 @@ public class RobotContainer {
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
+  //half speed
+  private final HalfSpeed m_half = new HalfSpeed();
+
   private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
   
   //camera
@@ -76,7 +80,9 @@ public class RobotContainer {
   private final Command m_simpleAuto = new SequentialCommandGroup(
     new RunCommand(() -> pcmDoubleSolenoid.set(Value.kReverse)).withTimeout(1.5),
     new RunCommand(() -> pcmDoubleSolenoid.set(Value.kForward)).withTimeout(0.2),
-    new StartEndCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
+    //reverse
+    //new StartEndCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
+    //turn(doesnt work)
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(0.0, 1), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.7),
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(-1, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.5),
     (m_balance));
@@ -130,10 +136,10 @@ public class RobotContainer {
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     //half speed
-    m_driverController.leftBumper()
-        .onTrue(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)))
+    m_driverController.leftBumper().toggleOnTrue(m_half);
+    /*   .onTrue(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)))
         .onFalse(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed)));
-
+*/
     //balance
     m_driverController.a().toggleOnTrue(m_balance);
 
