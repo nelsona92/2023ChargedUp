@@ -61,7 +61,7 @@ public class RobotContainer {
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
   //half speed
-  private final HalfSpeed m_half = new HalfSpeed();
+  private final HalfSpeed m_half = new HalfSpeed(m_robotDrive);
 
   private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
   
@@ -81,7 +81,7 @@ public class RobotContainer {
     new RunCommand(() -> pcmDoubleSolenoid.set(Value.kReverse)).withTimeout(1.5),
     new RunCommand(() -> pcmDoubleSolenoid.set(Value.kForward)).withTimeout(0.2),
     //reverse
-    //new StartEndCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
+    new StartEndCommand(() -> m_robotDrive.arcadeDrive(-AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
     //turn(doesnt work)
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(0.0, 1), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.7),
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(-1, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.5),
@@ -95,7 +95,7 @@ public class RobotContainer {
     System.out.println("out of configure bindings");
 
     m_robotDrive
-        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(m_driverController.getLeftY(),
+        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
             m_driverController.getRightX()), m_robotDrive));
     
     m_chooser.setDefaultOption("Auto", m_simpleAuto);
@@ -136,12 +136,13 @@ public class RobotContainer {
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     //half speed
-    m_driverController.leftBumper().toggleOnTrue(m_half);
-    /*   .onTrue(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)))
+    m_driverController.leftBumper()
+    //.toggleOnTrue(m_half);
+      .onTrue(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)))
         .onFalse(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed)));
-*/
+
     //balance
-    m_driverController.a().toggleOnTrue(m_balance);
+    //m_driverController.a().toggleOnTrue(m_balance);
 
     //solenoid
     pcmDoubleSolenoid.set(Value.kForward);

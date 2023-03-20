@@ -11,8 +11,10 @@ import frc.robot.subsystems.DriveSubsystem;
 public class HalfSpeed extends CommandBase {
   DriveSubsystem driveSubsystem;
   /** Creates a new HalfSpeed. */
-  public HalfSpeed() {
+  public HalfSpeed(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(driveSubsystem);
+    this.driveSubsystem = driveSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -22,7 +24,7 @@ public class HalfSpeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.setMax(Constants.DriveConstants.kHalfSpeed);
+    driveSubsystem.setMax(0.1);
   }
 
   // Called once the command ends or is interrupted.
