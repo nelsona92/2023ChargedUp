@@ -4,7 +4,14 @@
 
 package frc.robot.commands;
 
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj2.command.CommandBase;
+=======
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.Constants.AutoConstants;
+>>>>>>> 48e31f4ec5b40a5d23036166075c6a29489f2a71
 import frc.robot.subsystems.DriveSubsystem;
 
 public class AutoCommand extends CommandBase {

@@ -5,6 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+<<<<<<< HEAD
+=======
+import frc.robot.Constants;
+>>>>>>> 48e31f4ec5b40a5d23036166075c6a29489f2a71
 import frc.robot.subsystems.DriveSubsystem;
 
 public class HalfSpeed extends CommandBase {
