@@ -6,15 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.BalnceCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -24,11 +23,18 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
    // drn -- drive & intake & arm subsystem declarations
-   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+
+  //calling robot for navX
+  //private Robot m_robot;
+
+  //balance subsytem
+  private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -73,6 +79,8 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)))
         .onFalse(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed)));
 
+    //balance
+    m_driverController.a().toggleOnTrue(m_balance);
     }
       
   
