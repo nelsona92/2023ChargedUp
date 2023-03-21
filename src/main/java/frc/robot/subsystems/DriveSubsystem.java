@@ -38,7 +38,7 @@ private final MotorControllerGroup m_leftMotors =
 private final MotorControllerGroup m_rightMotors =
   new MotorControllerGroup(m_twoWheel, m_threeWheel);
 
-private final DifferentialDrive m_drive =
+public final DifferentialDrive m_drive =
   new DifferentialDrive(m_leftMotors, m_rightMotors);
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -65,7 +65,8 @@ private final DifferentialDrive m_drive =
 
   // 
   public void arcadeDrive(double fwd, double rot){
-    m_drive.arcadeDrive(-fwd*Math.abs(fwd), rot);
+    //m_drive.arcadeDrive(-fwd*Math.abs(fwd), rot/1.1);
+    m_drive.arcadeDrive(Math.pow(fwd, 3), rot/1.2);
   }
 
   // straight driving... needs gyro added
@@ -77,17 +78,15 @@ private final DifferentialDrive m_drive =
   public void setMax(double maxOutput){
     m_drive.setMaxOutput(maxOutput);
   }
+  /*
     // turns the to half and then back on
-    public void halfPower() {
-      if (!Constants.powerState) {
-        m_drive.setMaxOutput(DriveConstants.kHalfSpeed);
-      }
-      else {
-        m_drive.setMaxOutput(DriveConstants.kMaxSpeed); 
-      }
-      Constants.powerState = !Constants.powerState;
+    public boolean halfPower() {
+      runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kHalfSpeed)),
+      Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed));
+      return false;
+      
     }
-
+*/
     public CommandBase halfSpeed(){
       return runOnce(
         () -> System.out.println("Half Speed!!!!!!!!!!!")
