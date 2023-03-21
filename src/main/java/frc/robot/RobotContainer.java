@@ -55,6 +55,7 @@ public class RobotContainer {
 
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
+  private final BalnceCommand m_balance2 = new BalnceCommand(m_robotDrive);
 
   
   private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
@@ -68,13 +69,13 @@ public class RobotContainer {
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   //auto command
-  private final Command m_simpleDriveReverse = new StartEndCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0),
+  private final Command m_simpleDriveReverse = new StartEndCommand(() -> m_robotDrive.m_arcadeDrive(AutoConstants.kPower, 0.0), () -> m_robotDrive.m_arcadeDrive(0.0, 0.0),
       m_robotDrive).withTimeout(AutoConstants.kTimeOut);
   private final Command m_simpleAuto = new SequentialCommandGroup(
     new RunCommand(() -> pcmDoubleSolenoid.set(Value.kReverse)).withTimeout(1.5),
     new RunCommand(() -> pcmDoubleSolenoid.set(Value.kForward)).withTimeout(0.2),
     //reverse
-    new StartEndCommand(() -> m_robotDrive.arcadeDrive(-AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
+    new StartEndCommand(() -> m_robotDrive.m_arcadeDrive(-AutoConstants.kPower, 0.0), () -> m_robotDrive.m_arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(AutoConstants.kTimeOut), 
     //turn(doesnt work)
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(0.0, 1), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.7),
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(-1, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.5),
@@ -88,7 +89,7 @@ public class RobotContainer {
     System.out.println("out of configure bindings");
 
     m_robotDrive
-        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
+        .setDefaultCommand(new RunCommand(() -> m_robotDrive.m_arcadeDrive(-m_driverController.getLeftY(),
             m_driverController.getRightX()), m_robotDrive));
     
     m_chooser.setDefaultOption("Auto", m_simpleAuto);
@@ -135,7 +136,7 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> m_robotDrive.setMax(Constants.DriveConstants.kMaxSpeed)));
 
     //balance
-    //m_driverController.a().toggleOnTrue(m_balance);
+    m_driverController.a().toggleOnTrue(m_balance2);
 
     //solenoid
     pcmDoubleSolenoid.set(Value.kForward);

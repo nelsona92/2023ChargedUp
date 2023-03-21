@@ -28,7 +28,7 @@ public class BalnceCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveSubsystem.navx.reset();
+    //driveSubsystem.navx.reset();
     System.out.println("Balance Active");
 
   }
@@ -36,21 +36,30 @@ public class BalnceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (driveSubsystem.navx.getRoll() < 2){
-      driveSubsystem.arcadeDrive(0, 0);
+    //System.out.println(driveSubsystem.navx.getRoll());
+    if (driveSubsystem.navx.getRoll() < 2 && driveSubsystem.navx.getRoll() > -2){
+      driveSubsystem.m_arcadeDrive(0, 0);
     }
+    /* 
     if (driveSubsystem.navx.getRoll() > -2){
         driveSubsystem.arcadeDrive(0, 0);
     }
-    
-    if (driveSubsystem.navx.getRoll() <= -2){
-        driveSubsystem.arcadeDrive(-Constants.DriveConstants.kBalanceSpeed, 0);
+    */   
+    else{ 
+      if (driveSubsystem.navx.getRoll() <= -2){
+        System.out.println(-Constants.DriveConstants.kBalanceSpeed);
+        driveSubsystem.m_arcadeDrive(1.0, 0.0);
     }
+  
+    //if (driveSubsystem.navx.getRoll() >= 2){
+    else{    
+      System.out.println("positive");
 
-    if (driveSubsystem.navx.getRoll() >= 2){
-        driveSubsystem.arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0);
+      driveSubsystem.m_arcadeDrive(Constants.DriveConstants.kBalanceSpeed, 0.0);
+    }
     }
   }
+  
 
   // Called once the command ends or is interrupted.
   @Override
