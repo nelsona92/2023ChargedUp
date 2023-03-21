@@ -42,7 +42,6 @@ private final DifferentialDrive m_drive =
   new DifferentialDrive(m_leftMotors, m_rightMotors);
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-
     //inverting oneside
     m_zeroWheel.setInverted(true);
     m_oneWheel.setInverted(true);
