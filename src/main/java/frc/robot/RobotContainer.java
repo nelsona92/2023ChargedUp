@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -102,7 +103,13 @@ public class RobotContainer {
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),
             m_driverController.getRightX()), m_robotDrive));
     
+    // AUTO CHOOSER
+    // assuming a 
+    // m_chooser.addOption(name:"move like this", m_funnyWalkAuto);
+    m_chooser.addOption("simple reverse", m_simpleDriveReverse);
     m_chooser.setDefaultOption("Auto", m_simpleAuto);
+    // put it on the dashboard
+    SmartDashboard.putData("Auto",m_chooser);
   
     m_robotDrive.m_drive.setSafetyEnabled(false);
   }
