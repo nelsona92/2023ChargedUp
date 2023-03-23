@@ -14,6 +14,7 @@ import java.util.Map;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -61,14 +62,14 @@ public class RobotContainer {
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
-  //camera  
+  //camera on shuffleboard with button 
   private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
   ShuffleboardLayout sbCameraCommand = Shuffleboard.getTab("Camera")
     .getLayout("Camera Command", BuiltInLayouts.kList)
     .withSize(2, 2)
     .withProperties(Map.of("Label position", "HIDDEN"));
   
-    
+  // camera variables  
   private UsbCamera camera01;
   private UsbCamera camera02;
   private VideoSink videoServer;
@@ -102,10 +103,7 @@ public class RobotContainer {
             m_driverController.getRightX()), m_robotDrive));
     
     m_chooser.setDefaultOption("Auto", m_simpleAuto);
-
-    sbCamera.add(camera01)
-    .withSize(6, 4).withPosition(2, 0);
-    
+  
     m_robotDrive.m_drive.setSafetyEnabled(false);
   }
 
@@ -114,11 +112,21 @@ public class RobotContainer {
     camera01 = CameraServer.startAutomaticCapture(0);
     camera02 = CameraServer.startAutomaticCapture(1);
     videoServer = CameraServer.getServer();
+    // set camera(s) properties
     camera01.setResolution(320, 240);
     camera01.setFPS(15);
     camera02.setResolution(320, 240);
     camera02.setFPS(15);
+    // set starting camera
     videoServer.setSource(camera01);
+    // put camera on shuffleboard
+    // NOTE - this casts videoserver as the camera, may not work
+    sbCamera.add((Sendable) videoServer)
+      .withSize(6, 4).withPosition(2, 0);
+    // put button for switching cameras on shuffleboard
+    // NOTE - this might be done with just sbCamera
+    // sbCamera.add(new RunCommand(() -> cameraSwitch()));
+    // and skip all the stuff with sbCameraCommand
     sbCameraCommand.add(new RunCommand(() -> cameraSwitch()));
   }
 
