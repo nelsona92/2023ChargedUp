@@ -8,6 +8,9 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.BalnceCommand;
+
+import java.util.Map;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
@@ -15,7 +18,9 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,7 +63,12 @@ public class RobotContainer {
 
   //camera  
   private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
+  ShuffleboardLayout sbCameraCommand = Shuffleboard.getTab("Camera")
+    .getLayout("Camera Command", BuiltInLayouts.kList)
+    .withSize(2, 2)
+    .withProperties(Map.of("Label position", "HIDDEN"));
   
+    
   private UsbCamera camera01;
   private UsbCamera camera02;
   private VideoSink videoServer;
@@ -109,6 +119,7 @@ public class RobotContainer {
     camera02.setResolution(320, 240);
     camera02.setFPS(15);
     videoServer.setSource(camera01);
+    sbCameraCommand.add(new RunCommand(() -> cameraSwitch()));
   }
 
   // reads the current camera, then switches to the other camera
