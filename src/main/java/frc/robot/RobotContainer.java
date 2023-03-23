@@ -56,11 +56,11 @@ public class RobotContainer {
   //balance subsytem
   private final BalnceCommand m_balance = new BalnceCommand(m_robotDrive);
 
-  
+  //camera  
   private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
   
-  //camera
   private UsbCamera camera01;
+  private UsbCamera camera02;
   private VideoSink videoServer;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -79,7 +79,7 @@ public class RobotContainer {
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(0.0, 1), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.7),
     //new StartEndCommand(() -> m_robotDrive.arcadeDrive(-1, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0), m_robotDrive).withTimeout(.5),
     (m_balance));
-  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     cameraInit();
@@ -99,12 +99,26 @@ public class RobotContainer {
     m_robotDrive.m_drive.setSafetyEnabled(false);
   }
 
+  // sets up two cameras, one in each USB port
   private void cameraInit() {
     camera01 = CameraServer.startAutomaticCapture(0);
+    camera02 = CameraServer.startAutomaticCapture(1);
     videoServer = CameraServer.getServer();
     camera01.setResolution(320, 240);
     camera01.setFPS(15);
+    camera02.setResolution(320, 240);
+    camera02.setFPS(15);
     videoServer.setSource(camera01);
+  }
+
+  // reads the current camera, then switches to the other camera
+  private void cameraSwitch() {
+    if (videoServer.getSource() == camera01) {
+      videoServer.setSource(camera02);
+    }
+    else {
+      videoServer.setSource(camera01);
+    };
   }
 
   /**
@@ -136,6 +150,9 @@ public class RobotContainer {
 
     //balance
     //m_driverController.a().toggleOnTrue(m_balance);
+
+    //camera switch
+    m_driverController.x().onTrue(new RunCommand(() -> cameraSwitch())) ;
 
     //solenoid
     pcmDoubleSolenoid.set(Value.kForward);
